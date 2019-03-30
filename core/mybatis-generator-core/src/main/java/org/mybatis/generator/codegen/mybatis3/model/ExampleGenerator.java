@@ -1,5 +1,5 @@
 /**
- *    Copyright 2006-2018 the original author or authors.
+ *    Copyright 2006-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -657,7 +658,11 @@ public class ExampleGenerator extends AbstractJavaGenerator {
 
             if (introspectedColumn.isJdbcCharacterColumn()) {
                 answer.addMethod(getSetLikeMethod(introspectedColumn));
+                answer.addMethod(getSetLeftLikeMethod(introspectedColumn));
+                answer.addMethod(getSetRightLikeMethod(introspectedColumn));
                 answer.addMethod(getSetNotLikeMethod(introspectedColumn));
+                answer.addMethod(getSetLeftNotLikeMethod(introspectedColumn));
+                answer.addMethod(getSetRightNotLikeMethod(introspectedColumn));
             }
 
             answer.addMethod(getSetInOrNotInMethod(introspectedColumn, true));
@@ -711,8 +716,24 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         return getSingleValueMethod(introspectedColumn, "Like", "like"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    private Method getSetLeftLikeMethod(IntrospectedColumn introspectedColumn) {
+        return getSingleValueMethod(introspectedColumn, "LeftLike", "like"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private Method getSetRightLikeMethod(IntrospectedColumn introspectedColumn) {
+        return getSingleValueMethod(introspectedColumn, "RightLike", "like"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
     private Method getSetNotLikeMethod(IntrospectedColumn introspectedColumn) {
         return getSingleValueMethod(introspectedColumn, "NotLike", "not like"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private Method getSetLeftNotLikeMethod(IntrospectedColumn introspectedColumn) {
+        return getSingleValueMethod(introspectedColumn, "LeftNotLike", "not like"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private Method getSetRightNotLikeMethod(IntrospectedColumn introspectedColumn) {
+        return getSingleValueMethod(introspectedColumn, "RightNotLike", "not like"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private Method getSingleValueMethod(IntrospectedColumn introspectedColumn,
@@ -750,7 +771,15 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         sb.append(' ');
         sb.append(operator);
         sb.append("\", "); //$NON-NLS-1$
-        sb.append("value"); //$NON-NLS-1$
+        if(introspectedColumn.isStringColumn() && Arrays.asList("LeftLike","LeftNotLike").contains(nameFragment)){
+            sb.append("String.format(\"%s%%\", value) "); //$NON-NLS-1$
+        }else if(introspectedColumn.isStringColumn() && Arrays.asList("RightLike","RightNotLike").contains(nameFragment)){
+            sb.append("String.format(\"%%%s\", value) ");//$NON-NLS-1$
+        }else if(introspectedColumn.isStringColumn() && Arrays.asList("Like","NotLike").contains(nameFragment)){
+            sb.append("String.format(\"%%%s%%\", value) "); //$NON-NLS-1$
+        }else{
+            sb.append("value "); //$NON-NLS-1$
+        }
         sb.append(", \""); //$NON-NLS-1$
         sb.append(introspectedColumn.getJavaProperty());
         sb.append("\");"); //$NON-NLS-1$

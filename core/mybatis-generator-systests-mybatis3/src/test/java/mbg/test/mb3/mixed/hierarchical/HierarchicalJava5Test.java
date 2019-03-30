@@ -1,5 +1,5 @@
 /**
- *    Copyright 2006-2018 the original author or authors.
+ *    Copyright 2006-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -2534,7 +2534,119 @@ public class HierarchicalJava5Test extends AbstractMixedHierarchicalTest {
             mapper.insert(record);
 
             AwfulTableExample example = new AwfulTableExample();
-            example.createCriteria().andFirstFirstNameLike("b%");
+            example.createCriteria().andFirstFirstNameLike("b");
+            example.setOrderByClause("\"A_CuStOmEr iD\"");
+            List<AwfulTable> answer = mapper.selectByExample(example);
+            assertEquals(4, answer.size());
+            AwfulTable returnedRecord = answer.get(0);
+            assertEquals(111, returnedRecord.getId1().intValue());
+            assertEquals(222, returnedRecord.getId2().intValue());
+            returnedRecord = answer.get(1);
+            assertEquals(1111, returnedRecord.getId1().intValue());
+            assertEquals(2222, returnedRecord.getId2().intValue());
+            returnedRecord = answer.get(2);
+            assertEquals(11111, returnedRecord.getId1().intValue());
+            assertEquals(22222, returnedRecord.getId2().intValue());
+            returnedRecord = answer.get(3);
+            assertEquals(111111, returnedRecord.getId1().intValue());
+            assertEquals(222222, returnedRecord.getId2().intValue());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testAwfulTableSelectByExampleLeftLike() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            AwfulTableMapper mapper = sqlSession.getMapper(AwfulTableMapper.class);
+            AwfulTable record = new AwfulTable();
+            record.seteMail("fred@fred.com");
+            record.setEmailaddress("alsofred@fred.com");
+            record.setFirstFirstName("fred1");
+            record.setFrom("from field");
+            record.setId1(1);
+            record.setId2(2);
+            record.setId5(5);
+            record.setId6(6);
+            record.setId7(7);
+            record.setSecondFirstName("fred2");
+            record.setThirdFirstName("fred3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("wilma@wilma.com");
+            record.setEmailaddress("alsoWilma@wilma.com");
+            record.setFirstFirstName("wilma1");
+            record.setFrom("from field");
+            record.setId1(11);
+            record.setId2(22);
+            record.setId5(55);
+            record.setId6(66);
+            record.setId7(77);
+            record.setSecondFirstName("wilma2");
+            record.setThirdFirstName("wilma3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("pebbles@pebbles.com");
+            record.setEmailaddress("alsoPebbles@pebbles.com");
+            record.setFirstFirstName("pebbles1");
+            record.setFrom("from field");
+            record.setId1(111);
+            record.setId2(222);
+            record.setId5(555);
+            record.setId6(666);
+            record.setId7(777);
+            record.setSecondFirstName("pebbles2");
+            record.setThirdFirstName("pebbles3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("barney@barney.com");
+            record.setEmailaddress("alsoBarney@barney.com");
+            record.setFirstFirstName("barney1");
+            record.setFrom("from field");
+            record.setId1(1111);
+            record.setId2(2222);
+            record.setId5(5555);
+            record.setId6(6666);
+            record.setId7(7777);
+            record.setSecondFirstName("barney2");
+            record.setThirdFirstName("barney3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("betty@betty.com");
+            record.setEmailaddress("alsoBetty@betty.com");
+            record.setFirstFirstName("betty1");
+            record.setFrom("from field");
+            record.setId1(11111);
+            record.setId2(22222);
+            record.setId5(55555);
+            record.setId6(66666);
+            record.setId7(77777);
+            record.setSecondFirstName("betty2");
+            record.setThirdFirstName("betty3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("bammbamm@bammbamm.com");
+            record.setEmailaddress("alsoBammbamm@bammbamm.com");
+            record.setFirstFirstName("bammbamm1");
+            record.setFrom("from field");
+            record.setId1(111111);
+            record.setId2(222222);
+            record.setId5(555555);
+            record.setId6(666666);
+            record.setId7(777777);
+            record.setSecondFirstName("bammbamm2");
+            record.setThirdFirstName("bammbamm3");
+            mapper.insert(record);
+
+            AwfulTableExample example = new AwfulTableExample();
+            example.createCriteria().andFirstFirstNameLeftLike("b");
             example.setOrderByClause("\"A_CuStOmEr iD\"");
             List<AwfulTable> answer = mapper.selectByExample(example);
             assertEquals(3, answer.size());
@@ -2547,6 +2659,122 @@ public class HierarchicalJava5Test extends AbstractMixedHierarchicalTest {
             returnedRecord = answer.get(2);
             assertEquals(111111, returnedRecord.getId1().intValue());
             assertEquals(222222, returnedRecord.getId2().intValue());
+        } finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void testAwfulTableSelectByExampleRightLike() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            AwfulTableMapper mapper = sqlSession.getMapper(AwfulTableMapper.class);
+            AwfulTable record = new AwfulTable();
+            record.seteMail("fred@fred.com");
+            record.setEmailaddress("alsofred@fred.com");
+            record.setFirstFirstName("fred1");
+            record.setFrom("from field");
+            record.setId1(1);
+            record.setId2(2);
+            record.setId5(5);
+            record.setId6(6);
+            record.setId7(7);
+            record.setSecondFirstName("fred2");
+            record.setThirdFirstName("fred3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("wilma@wilma.com");
+            record.setEmailaddress("alsoWilma@wilma.com");
+            record.setFirstFirstName("wilma1");
+            record.setFrom("from field");
+            record.setId1(11);
+            record.setId2(22);
+            record.setId5(55);
+            record.setId6(66);
+            record.setId7(77);
+            record.setSecondFirstName("wilma2");
+            record.setThirdFirstName("wilma3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("pebbles@pebbles.com");
+            record.setEmailaddress("alsoPebbles@pebbles.com");
+            record.setFirstFirstName("pebbles1");
+            record.setFrom("from field");
+            record.setId1(111);
+            record.setId2(222);
+            record.setId5(555);
+            record.setId6(666);
+            record.setId7(777);
+            record.setSecondFirstName("pebbles2");
+            record.setThirdFirstName("pebbles3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("barney@barney.com");
+            record.setEmailaddress("alsoBarney@barney.com");
+            record.setFirstFirstName("barney1");
+            record.setFrom("from field");
+            record.setId1(1111);
+            record.setId2(2222);
+            record.setId5(5555);
+            record.setId6(6666);
+            record.setId7(7777);
+            record.setSecondFirstName("barney2");
+            record.setThirdFirstName("barney3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("betty@betty.com");
+            record.setEmailaddress("alsoBetty@betty.com");
+            record.setFirstFirstName("betty1");
+            record.setFrom("from field");
+            record.setId1(11111);
+            record.setId2(22222);
+            record.setId5(55555);
+            record.setId6(66666);
+            record.setId7(77777);
+            record.setSecondFirstName("betty2");
+            record.setThirdFirstName("betty3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("bammbamm@bammbamm.com");
+            record.setEmailaddress("alsoBammbamm@bammbamm.com");
+            record.setFirstFirstName("bammbamm1");
+            record.setFrom("from field");
+            record.setId1(111111);
+            record.setId2(222222);
+            record.setId5(555555);
+            record.setId6(666666);
+            record.setId7(777777);
+            record.setSecondFirstName("bammbamm2");
+            record.setThirdFirstName("bammbamm3");
+            mapper.insert(record);
+
+            record = new AwfulTable();
+            record.seteMail("bammbamm@bammbamm.com");
+            record.setEmailaddress("alsoBammbamm@bammbamm.com");
+            record.setFirstFirstName("bammbamm1b");
+            record.setFrom("from field");
+            record.setId1(1111111);
+            record.setId2(2222222);
+            record.setId5(5555555);
+            record.setId6(6666666);
+            record.setId7(7777777);
+            record.setSecondFirstName("bammbamm2b");
+            record.setThirdFirstName("bammbamm3b");
+            mapper.insert(record);
+
+            AwfulTableExample example = new AwfulTableExample();
+            example.createCriteria().andFirstFirstNameRightLike("b");
+            example.setOrderByClause("\"A_CuStOmEr iD\"");
+            List<AwfulTable> answer = mapper.selectByExample(example);
+            assertEquals(1, answer.size());
+            AwfulTable returnedRecord = answer.get(0);
+            assertEquals(1111111, returnedRecord.getId1().intValue());
+            assertEquals(2222222, returnedRecord.getId2().intValue());
         } finally {
             sqlSession.close();
         }
@@ -2643,19 +2871,16 @@ public class HierarchicalJava5Test extends AbstractMixedHierarchicalTest {
             mapper.insert(record);
 
             AwfulTableExample example = new AwfulTableExample();
-            example.createCriteria().andFirstFirstNameNotLike("b%");
+            example.createCriteria().andFirstFirstNameNotLike("b");
             example.setOrderByClause("\"A_CuStOmEr iD\"");
             List<AwfulTable> answer = mapper.selectByExample(example);
-            assertEquals(3, answer.size());
+            assertEquals(2, answer.size());
             AwfulTable returnedRecord = answer.get(0);
             assertEquals(1, returnedRecord.getId1().intValue());
             assertEquals(2, returnedRecord.getId2().intValue());
             returnedRecord = answer.get(1);
             assertEquals(11, returnedRecord.getId1().intValue());
             assertEquals(22, returnedRecord.getId2().intValue());
-            returnedRecord = answer.get(2);
-            assertEquals(111, returnedRecord.getId1().intValue());
-            assertEquals(222, returnedRecord.getId2().intValue());
         } finally {
             sqlSession.close();
         }
